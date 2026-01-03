@@ -131,6 +131,9 @@ func (m *Message) Encode() {
 // Decode charset
 func (m *Message) Decode() {
 	enc := strings.Split(config.Config.Chrs.Default, " ")[0]
+	if (*m.AreaObject).GetChrs() != "" {
+		enc = strings.Split((*m.AreaObject).GetChrs(), " ")[0]
+	}
 	if _, ok := m.Kludges["CHRS"]; ok {
 		enc = m.Kludges["CHRS"]
 		if enc == "IBMPC" {
