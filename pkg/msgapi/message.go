@@ -131,8 +131,17 @@ func (m *Message) Encode() {
 // Decode charset
 func (m *Message) Decode() {
 	enc := strings.Split(config.Config.Chrs.Default, " ")[0]
-	if (m.AreaObject != nil) && (*m.AreaObject).GetChrs() != "" {
-		enc = strings.Split((*m.AreaObject).GetChrs(), " ")[0]
+	if m.AreaObject == nil {
+		for i := range config.Config.Areas {
+			if config.Config.Areas[i].Chrs != "" && config.Config.Areas[i].Name == m.Area {
+				enc = strings.Split(config.Config.Areas[i].Chrs, " ")[0]
+				break
+			}
+		}
+	} else {
+		if (*m.AreaObject).GetChrs() != "" {
+			enc = strings.Split((*m.AreaObject).GetChrs(), " ")[0]
+		}
 	}
 	if _, ok := m.Kludges["CHRS"]; ok {
 		enc = m.Kludges["CHRS"]
